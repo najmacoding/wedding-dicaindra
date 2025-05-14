@@ -12,7 +12,6 @@
     .font-wedding { font-family: 'Great Vibes', cursive; }
     body { font-family: 'Poppins', sans-serif; }
     
-    /* Animasi Kustom */
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-15px); }
@@ -40,12 +39,10 @@
       transform: translateY(0);
     }
     
-    /* Gradient Background */
     .bg-gradient-wedding {
       background: linear-gradient(135deg, #f9c5d1 0%, #f2a2b8 50%, #ec7d9f 100%);
     }
     
-    /* Tombol */
     .btn {
       transition: all 0.3s ease;
       transform: translateY(0);
@@ -59,12 +56,44 @@
       transform: translateY(1px);
     }
     
-    /* Efek Hover Khusus */
     .hover-grow {
       transition: transform 0.3s ease;
     }
     .hover-grow:hover {
       transform: scale(1.05);
+    }
+    
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 90%;
+      width: 400px;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -213,57 +242,56 @@
   </section>
 
   <!-- RSVP -->
-<section id="rsvp" class="p-8 bg-pink-50 fade-in">
-  <h2 class="text-3xl font-semibold mb-8 text-center text-pink-700">Konfirmasi Kehadiran</h2>
-  <p class="text-center mb-8 max-w-2xl mx-auto text-lg">Mohon beri tahu kami apakah Anda bisa hadir di hari bahagia kami</p>
-  
-  <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg hover-grow">
-    <form id="rsvpForm" class="space-y-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap*</label>
-        <input type="text" id="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
-      </div>
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" id="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
-      </div>
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700">Nomor WhatsApp*</label>
-        <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Apakah Anda akan hadir?*</label>
-        <div class="mt-2 space-y-2">
-          <div class="flex items-center">
-            <input id="hadir-ya" name="kehadiran" type="radio" value="Ya" checked class="focus:ring-pink-500 h-4 w-4 text-pink-600 border-gray-300">
-            <label for="hadir-ya" class="ml-3 block text-sm font-medium text-gray-700">Ya, dengan senang hati</label>
-          </div>
-          <div class="flex items-center">
-            <input id="hadir-tidak" name="kehadiran" type="radio" value="Tidak" class="focus:ring-pink-500 h-4 w-4 text-pink-600 border-gray-300">
-            <label for="hadir-tidak" class="ml-3 block text-sm font-medium text-gray-700">Maaf, tidak bisa hadir</label>
+  <section id="rsvp" class="p-8 bg-pink-50 fade-in">
+    <h2 class="text-3xl font-semibold mb-8 text-center text-pink-700">Konfirmasi Kehadiran</h2>
+    <p class="text-center mb-8 max-w-2xl mx-auto text-lg">Mohon beri tahu kami apakah Anda bisa hadir di hari bahagia kami</p>
+    
+    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg hover-grow">
+      <form id="rsvpForm" class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap*</label>
+          <input type="text" id="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Nomor WhatsApp*</label>
+          <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Apakah Anda akan hadir?*</label>
+          <div class="mt-2 space-y-2">
+            <div class="flex items-center">
+              <input id="hadir-ya" name="kehadiran" type="radio" value="Ya" checked class="focus:ring-pink-500 h-4 w-4 text-pink-600 border-gray-300">
+              <label for="hadir-ya" class="ml-3 block text-sm font-medium text-gray-700">Ya, dengan senang hati</label>
+            </div>
+            <div class="flex items-center">
+              <input id="hadir-tidak" name="kehadiran" type="radio" value="Tidak" class="focus:ring-pink-500 h-4 w-4 text-pink-600 border-gray-300">
+              <label for="hadir-tidak" class="ml-3 block text-sm font-medium text-gray-700">Maaf, tidak bisa hadir</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <label for="ucapan" class="block text-sm font-medium text-gray-700">Ucapan/Doa untuk Kami</label>
-        <textarea id="ucapan" rows="3" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500"></textarea>
-      </div>
-      <div class="pt-4">
-        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-full shadow-lg btn flex items-center justify-center gap-2">
-          Kirim Konfirmasi
-        </button>
-      </div>
-    </form>
-  </div>
-</section>
+        <div>
+          <label for="ucapan" class="block text-sm font-medium text-gray-700">Ucapan/Doa untuk Kami</label>
+          <textarea id="ucapan" rows="3" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500"></textarea>
+        </div>
+        <div class="pt-4">
+          <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-full shadow-lg btn flex items-center justify-center gap-2">
+            Kirim Konfirmasi
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
 
-
-   <!-- Ucapan -->
+  <!-- Ucapan -->
   <section class="p-8 bg-white fade-in">
     <h2 class="text-3xl font-semibold mb-8 text-center text-pink-700">Ucapan & Doa</h2>
     <div class="max-w-4xl mx-auto">
       <div id="ucapanContainer" class="space-y-4">
-        <!-- Ucapan akan dimuat di sini secara dinamis -->
+        <!-- Ucapan akan dimuat di sini -->
       </div>
       <div class="mt-8 text-center">
         <button onclick="loadMoreUcapan()" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full shadow btn">
@@ -272,13 +300,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Modal Konfirmasi -->
-  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white p-8 rounded-xl max-w-md mx-4 text-center animate__animated animate__zoomIn">
-      <!-- Isi modal sebelumnya -->
-    </div>
-  </div>
 
   <!-- Footer -->
   <footer class="text-center p-6 bg-pink-100 text-sm fade-in">
@@ -290,15 +311,15 @@
   </footer>
 
   <!-- Modal Konfirmasi -->
-  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white p-8 rounded-xl max-w-md mx-4 text-center animate__animated animate__zoomIn">
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-content animate__animated animate__zoomIn">
       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <h3 class="text-xl font-semibold mb-2">Konfirmasi Terkirim!</h3>
-      <p class="mb-6">Terima kasih telah mengkonfirmasi kehadiran Anda. Kami tidak sabar bertemu di hari bahagia kami!</p>
+      <p class="mb-6">Terima kasih atas konfirmasi dan doanya.</p>
       <button onclick="closeModal()" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full shadow btn">
         Tutup
       </button>
@@ -352,7 +373,7 @@
 
     // Countdown
     function updateCountdown() {
-      const weddingDate = new Date("December 12, 2025 00:00:00").getTime();
+      const weddingDate = new Date("July 19, 2025 00:00:00").getTime();
       const now = new Date().getTime();
       const distance = weddingDate - now;
       
@@ -381,58 +402,25 @@
     });
     window.dispatchEvent(new Event('scroll'));
 
-    // RSVP Form
-    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Simulasi pengiriman form
-      setTimeout(() => {
-        document.getElementById('successModal').classList.remove('hidden');
-        document.getElementById('rsvpForm').reset();
-      }, 1000);
-    });
+    // Modal Functions
+    function showModal() {
+      const modal = document.getElementById('successModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
 
     function closeModal() {
-      document.getElementById('successModal').classList.add('hidden');
+      const modal = document.getElementById('successModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = ''; // Enable scrolling
     }
 
-    // Load Ucapan (simulasi)
-    function loadUcapan() {
-      const ucapan = [
-        { name: "Budi Santoso", message: "Selamat atas pernikahannya! Semoga menjadi keluarga yang sakinah mawaddah wa rahmah." },
-        { name: "Ani Wijaya", message: "Semoga pernikahan kalian penuh berkah dan kebahagiaan. Kami tidak sabar untuk merayakan bersama!" },
-        { name: "Rina Permata", message: "Congratulations! Wishing you both a lifetime of love and happiness." },
-        { name: "Dodi Setiawan", message: "Selamat menempuh hidup baru. Semoga langgeng sampai akhir hayat." }
-      ];
-      
-      const container = document.getElementById('ucapanContainer');
-      ucapan.forEach(item => {
-        const ucapanItem = document.createElement('div');
-        ucapanItem.className = 'bg-pink-50 p-4 rounded-lg';
-        ucapanItem.innerHTML = `
-          <p class="font-semibold text-pink-700">${item.name}</p>
-          <p class="mt-1 text-gray-700">${item.message}</p>
-          <p class="mt-2 text-xs text-gray-500">2 hari yang lalu</p>
-        `;
-        container.appendChild(ucapanItem);
-      });
-    }
-    
-    function loadMoreUcapan() {
-      // Simulasi loading
-      const btn = event.target;
-      btn.disabled = true;
-      btn.innerHTML = '<span class="inline-block animate-spin">⏳</span> Memuat...';
-      
-      setTimeout(() => {
-        loadUcapan();
-        btn.disabled = false;
-        btn.textContent = 'Muat Lebih Banyak';
-      }, 1000);
-    }
-    
-    // Load ucapan pertama kali
-    loadUcapan();
+    // Click outside modal to close
+    document.getElementById('successModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
 
     // Simpan ke localStorage
     function simpanUcapan(nama, ucapan, hadir) {
@@ -443,16 +431,9 @@
         tanggal: new Date().toISOString()
       };
       
-      // Ambil data yang sudah ada atau buat array baru
       const semuaUcapan = JSON.parse(localStorage.getItem('ucapanPernikahan')) || [];
-      
-      // Tambahkan ucapan baru
-      semuaUcapan.unshift(ucapanData); // unshift untuk menambahkan di awal array
-      
-      // Simpan kembali ke localStorage
+      semuaUcapan.unshift(ucapanData);
       localStorage.setItem('ucapanPernikahan', JSON.stringify(semuaUcapan));
-      
-      // Tampilkan ucapan baru
       tampilkanUcapanTerbaru(ucapanData);
     }
 
@@ -466,15 +447,18 @@
         '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded ml-2">Akan Hadir</span>' : 
         '<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded ml-2">Tidak Hadir</span>';
       
+      const tanggal = new Date(ucapanData.tanggal);
+      const options = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
+      const tanggalFormat = tanggal.toLocaleDateString('id-ID', options);
+      
       ucapanItem.innerHTML = `
         <div class="flex justify-between items-start">
           <p class="font-semibold text-pink-700">${ucapanData.nama} ${statusHadir}</p>
-          <p class="text-xs text-gray-500">Baru saja</p>
+          <p class="text-xs text-gray-500">${tanggalFormat}</p>
         </div>
         <p class="mt-2 text-gray-700">${ucapanData.ucapan}</p>
       `;
       
-      // Tambahkan di awal container
       container.insertBefore(ucapanItem, container.firstChild);
     }
 
@@ -483,12 +467,10 @@
       const semuaUcapan = JSON.parse(localStorage.getItem('ucapanPernikahan')) || [];
       const container = document.getElementById('ucapanContainer');
       
-      // Kosongkan container jika offset 0 (load awal)
       if (offset === 0) {
         container.innerHTML = '';
       }
       
-      // Potong array sesuai limit dan offset
       const ucapanToShow = semuaUcapan.slice(offset, offset + limit);
       
       if (ucapanToShow.length === 0 && offset > 0) {
@@ -536,14 +518,10 @@
       const ucapan = document.getElementById('ucapan').value;
       const hadir = document.querySelector('input[name="kehadiran"]:checked').value;
       
-      // Simpan ke localStorage
       simpanUcapan(nama, ucapan, hadir);
-      
-      // Tampilkan modal konfirmasi
-      document.getElementById('successModal').classList.remove('hidden');
+      showModal();
       document.getElementById('rsvpForm').reset();
       
-      // Scroll ke bagian ucapan
       setTimeout(() => {
         document.querySelector('#ucapanContainer').scrollIntoView({
           behavior: 'smooth'
@@ -551,11 +529,9 @@
       }, 1000);
     });
 
-    // Saat halaman dimuat, tampilkan ucapan
+    // Saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
       loadUcapan();
-      
-      // Coba putar musik
       music.play().catch(e => console.log("Autoplay prevented:", e));
     });
   </script>
